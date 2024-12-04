@@ -4,7 +4,6 @@ import { makeStyles } from "tss-react/mui";
 
 const useStyles = makeStyles()((theme) => ({
     loginButton: {
-        marginTop: theme.spacing(2),
         textTransform: 'capitalize',
         backgroundColor: 'rgb(37, 86, 161)',
         width: '100px',
@@ -17,7 +16,7 @@ const useStyles = makeStyles()((theme) => ({
     },
 }));
 
-export default function LoginForm() {
+export default function LoginForm({ text, onClick, startIcon, onChange, style }) {
 
     const { classes } = useStyles();
 
@@ -28,8 +27,13 @@ export default function LoginForm() {
                     variant="contained"
                     color="primary"
                     className={classes.loginButton}
+                    ButtonText={text}
+                    onClick={onClick}
+                    startIcon={startIcon}
+                    onChange={onChange}
+                    style={style}
                 >
-                    Login
+                    {text}
                 </Button>
             </Box>
         </>

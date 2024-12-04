@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { Grid, Typography } from "@mui/material";
 import { makeStyles } from "tss-react/mui";
-import Logo from './Logo';
 import CommonTextField from '../Common/CommonTextField'
 import CommonCard from '../Common/CommonCard'
 import CommonButton from '../Common/CommonButton'
 import CommonLink from '../Common/CommonLink'
-import TrollyBoyBox from "./TrollyBoyBox";
+import TrollyBoyBox from "../assets/TrollyBox.png";
+import Logo from '../assets/mainLogo.png'
 
 const useStyles = makeStyles()((theme) => ({
     LogoTextCssStyleMui: {
@@ -37,7 +37,7 @@ const useStyles = makeStyles()((theme) => ({
         [theme.breakpoints.up(600)]: {
             width: 'auto'
         }
-    }
+    },
 }));
 
 export default function LoginForm() {
@@ -49,7 +49,7 @@ export default function LoginForm() {
             <CommonCard>
                 <Grid container spacing={2} className={classes.GridMediaSmall}>
                     <Grid item className={classes.GridSmallScreenLogoAndText}>
-                        <Logo />
+                        <img src={Logo} width={100} height={80} alt="Logo" />
                     </Grid>
                     <Grid item className={classes.GridSmallScreenLogoAndText}>
                         <Typography variant="h3" className={classes.LogoTextCssStyleMui}>
@@ -87,12 +87,14 @@ export default function LoginForm() {
                         href='#'
                     />
                 </Grid>
-                <Grid item xs={12}>
-                    <CommonButton />
+                <Grid item xs={12} marginTop={4} >
+                    <CommonButton
+                        text='Login'
+                    />
                 </Grid>
                 <Grid item xs={12}>
                     <Grid textAlign='start'>
-                        <TrollyBoyBox />
+                        <img src={TrollyBoyBox} alt="images" />
                     </Grid>
                 </Grid>
             </CommonCard>

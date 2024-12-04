@@ -1,18 +1,18 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Layout from "./Components/Layout";
 import Login from './LoginPage/Login';
-import Dashboard from "./Components/Dashboard";
 import Employees from "./Pages/Employees";
+import Products from "./Pages/Products";
+import Sidebar from './Components/Sidebar'
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route path="/" element={<Layout />}>
-          <Route path="dashboard" element={<Dashboard />} />
+        <Route path="/" element={<Sidebar />}>
           <Route path="employees" element={<Employees />} />
+          <Route path="products" element={<Products />} />
         </Route>
       </Routes>
     </BrowserRouter>

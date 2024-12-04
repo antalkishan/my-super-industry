@@ -1,18 +1,14 @@
+
 import * as React from 'react';
-import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import { NavLink } from 'react-router-dom';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
+import { styled, useTheme } from '@mui/material/styles';
+import { Box, Drawer, CssBaseline, AppBar as MuiAppBar, Toolbar, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Typography, IconButton } from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
 import MailIcon from '@mui/icons-material/Mail';
-import DashboardIcon from '@mui/icons-material/Dashboard';
 import PeopleIcon from '@mui/icons-material/People';
-import { Typography } from '@mui/material';
+import ProductionQuantityLimitsIcon from '@mui/icons-material/ProductionQuantityLimits';
+import { NavLink, Outlet } from 'react-router-dom';
 import { makeStyles } from 'tss-react/mui';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 const useStyles = makeStyles()((theme) => ({
     SupTextMainDrawer: {
@@ -21,13 +17,14 @@ const useStyles = makeStyles()((theme) => ({
         color: 'rgb(255, 255, 255)'
     },
     SupMainLogoTextCssStyleMui: {
-        padding: '16px',
+        padding: '15px',
         display: 'flex',
         justifyContent: 'center'
     },
     ListItemButtonCssStyleMui: {
         color: 'white',
         marginLeft: '16px',
+        marginBottom: '16px',
         '&.active': {
             backgroundColor: 'rgb(243, 248, 255)',
             color: 'rgb(37, 86, 161)',
@@ -69,23 +66,90 @@ const useStyles = makeStyles()((theme) => ({
             color: 'rgb(37, 86, 161)',
         }
     },
-}))
+    SupMenuIconCssStyleMui: {
+        color: 'rgb(0, 0, 0)'
+    }
+}));
+
+const drawerWidth = 240;
 
 const routes = [
-    { path: '/dashboard', label: 'Dashboard', icon: <DashboardIcon /> },
     { path: '/employees', label: 'Employees', icon: <PeopleIcon /> },
-    { path: '/inbox', label: 'Inbox', icon: <InboxIcon /> },
+    { path: '/products', label: 'Products', icon: <ProductionQuantityLimitsIcon /> },
     { path: '/mail', label: 'Mail', icon: <MailIcon /> },
 ];
 
-const drawerWidth = 243;
+const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
+    ({ theme, open }) => ({
+        flexGrow: 1,
+        padding: theme.spacing(1),
+        overflowX: 'auto',
+        [theme.breakpoints.up(600)]: {
+            padding: theme.spacing(3),
+        },
+        transition: theme.transitions.create('margin', {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.leavingScreen,
+        }),
+        marginLeft: open ? 0 : `-${drawerWidth}px`,
+        backgroundColor: 'rgb(243, 248, 255)'
+    }),
+);
 
-export default function Sidebar() {
+const AppBar = styled(MuiAppBar, {
+    shouldForwardProp: (prop) => prop !== 'open',
+})(({ theme, open }) => ({
+    backgroundColor: 'rgb(255, 255, 255)',
+    boxShadow: 'none',
+    transition: theme.transitions.create(['margin', 'width'], {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+    }),
+    ...(open && {
+        width: `calc(100% - ${drawerWidth}px)`,
+        marginLeft: `${drawerWidth}px`,
+        transition: theme.transitions.create(['margin', 'width'], {
+            easing: theme.transitions.easing.easeOut,
+            duration: theme.transitions.duration.enteringScreen,
+        }),
+    }),
+}));
 
+export default function PersistentDrawerLeft() {
     const { classes } = useStyles();
+    const theme = useTheme();
+    const isSmallScreen = useMediaQuery(theme.breakpoints.down(600))
+    const [open, setOpen] = React.useState(!isSmallScreen);
+
+    React.useEffect(() => {
+        setOpen(!isSmallScreen);
+    }, [isSmallScreen]);
+
+    const toggleDrawer = () => {
+        setOpen((prevOpen) => !prevOpen);
+    };
 
     return (
         <Box sx={{ display: 'flex' }}>
+            <CssBaseline />
+            <AppBar position="fixed" open={open}>
+                <Toolbar>
+                    <IconButton
+                        color="inherit"
+                        aria-label="toggle drawer"
+                        onClick={toggleDrawer}
+                        edge="start"
+                        sx={{ mr: 2 }}
+                    >
+                        <MenuIcon className={classes.SupMenuIconCssStyleMui} />
+                    </IconButton>
+                    <Box>
+                        <Typography variant="h6" noWrap component="div">
+                            Persistent drawer
+                        </Typography>
+                    </Box>
+                </Toolbar>
+            </AppBar>
             <Drawer
                 sx={{
                     width: drawerWidth,
@@ -98,19 +162,20 @@ export default function Sidebar() {
                         borderRight: 'none'
                     },
                 }}
-                variant="permanent"
+                variant="persistent"
                 anchor="left"
+                open={open}
             >
                 <Box>
                     <Box className={classes.SupMainLogoTextCssStyleMui}>
-                        <Typography variant='p'
-                            className={classes.SupTextMainDrawer} >
+                        <Typography variant='p' component='p'
+                            className={classes.SupTextMainDrawer}>
                             Super Industry
                         </Typography>
                     </Box>
                 </Box>
-                <List>
-                    {routes.map((route, index) => (
+                <List sx={{ padding: '0' }}>
+                    {routes.map((route) => (
                         <ListItem key={route.label} disablePadding>
                             <ListItemButton
                                 component={NavLink}
@@ -126,11 +191,12 @@ export default function Sidebar() {
                     ))}
                 </List>
             </Drawer>
-            <Box
-                component="main"
-                sx={{ flexGrow: 1, bgcolor: 'background.default', p: 3 }}
-            >
-            </Box>
+            <Main open={open}>
+                <Box>
+                    <Toolbar />
+                    <Outlet />
+                </Box>
+            </Main>
         </Box>
     );
 }

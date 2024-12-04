@@ -1,9 +1,8 @@
-
 import React from "react";
 import { Grid } from "@mui/material";
 import { makeStyles } from "tss-react/mui";
-import LoginImage from '../assets/Group 1000003217.png';
 import LoginForm from './LoginForm';
+import MainImages from '../assets/Group 1000003217.png'
 
 const useStyles = makeStyles()((theme) => ({
     SupMainBoxCssStyleMui: {
@@ -30,7 +29,7 @@ const LoginPage = () => {
     return (
         <Grid container className={classes.SupMainBoxCssStyleMui}>
             <Grid item xs={12} lg={6} className={classes.imageContainer}>
-                <img src={LoginImage} alt="Factory Illustration" className={classes.image} />
+                <img src={MainImages} alt="Factory Illustration" className={classes.image} />
             </Grid>
             <Grid item xs={12} lg={6}>
                 <LoginForm />
@@ -40,4 +39,3 @@ const LoginPage = () => {
 };
 
 export default LoginPage;
-

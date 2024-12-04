@@ -26,6 +26,7 @@ export default function CommonTextField({
     onClick,
     type,
     InputProps,
+    className,
     ...rest
 }) {
     const { classes } = useStyle();
@@ -39,8 +40,8 @@ export default function CommonTextField({
         event.preventDefault();
     };
 
-    const inputType = type === 'password' 
-        ? (showPassword ? 'text' : 'password') 
+    const inputType = type === 'password'
+        ? (showPassword ? 'text' : 'password')
         : type;
 
     const combinedInputProps = {
@@ -80,6 +81,7 @@ export default function CommonTextField({
                     InputLabelProps={{ shrink: true }}
                     InputProps={combinedInputProps}
                     {...rest}
+                    className={className}
                 />
             </Box>
         </Box>
